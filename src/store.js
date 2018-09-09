@@ -4,14 +4,14 @@ import thunk from 'redux-thunk'
 import createHistory from 'history/createBrowserHistory'
 import { reducer as formReducer } from 'redux-form'
 
-import reducers from 'features/ducks'
+// import reducers from 'features/ducks'
 
 export const history = createHistory()
 
 const rootReducer = combineReducers({
   routing: routerReducer,
   form: formReducer,
-  ...reducers,
+  // ...reducers,
 })
 
 const middleware = [thunk, routerMiddleware(history)]
