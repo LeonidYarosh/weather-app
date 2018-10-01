@@ -1,12 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import { DisplayOfWeather } from 'features/content/ui/DisplayOfWeather'
 import isEmpty from 'lodash/isEmpty'
 
-import { getWeather } from 'features/content/api'
-
-
-export class Content extends React.Component {
+class Content extends React.Component {
   static propTypes = {
+    getWeather: PropTypes.func,
+    weatherData: PropTypes.object,
   }
 
   state = {
@@ -21,12 +22,10 @@ export class Content extends React.Component {
   }
 
   onClick = async() => {
+    const { getWeather } = this.props
     const { city } = this.state
-    const weatherData = city ? await getWeather(city) : null
 
-    if (weatherData && !isEmpty(weatherData)) {
-      this.onChange(weatherData, 'weatherData')
-    }
+    getWeather(city)
   }
 
   onKeyDown = e => {
@@ -38,8 +37,10 @@ export class Content extends React.Component {
   render() {
     const {
       city,
-      weatherData,
     } = this.state
+    const {
+      weatherData,
+    } = this.props
 
     return (
       <div>
@@ -60,3 +61,13 @@ export class Content extends React.Component {
     )
   }
 }
+
+const mapState = state => ({
+  weatherData: state.archive.payload,
+})
+
+const mapDispatch = dispatch => ({
+  getWeather: nameCity => dispatch.archive.getWeather(nameCity)
+})
+
+export default connect(mapState, mapDispatch)(Content)
