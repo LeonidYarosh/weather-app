@@ -1,8 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { DisplayOfWeather } from 'features/content/ui/DisplayOfWeather'
+import { bindActionCreators } from 'redux'
 import isEmpty from 'lodash/isEmpty'
+
+import { DisplayOfWeather } from './DisplayOfWeather'
+import { getPayloadWeather } from '../ducks/selectors'
+import { getWeather } from '../ducks/actions'
 
 class Content extends React.Component {
   static propTypes = {
@@ -21,7 +25,7 @@ class Content extends React.Component {
     })
   }
 
-  onClick = async() => {
+  onClick = () => {
     const { getWeather } = this.props
     const { city } = this.state
 
@@ -35,12 +39,8 @@ class Content extends React.Component {
   }
 
   render() {
-    const {
-      city,
-    } = this.state
-    const {
-      weatherData,
-    } = this.props
+    const { city } = this.state
+    const { weatherData } = this.props
 
     return (
       <div>
@@ -50,24 +50,28 @@ class Content extends React.Component {
           onChange={e => this.onChange(e.target.value, 'city')}
           onKeyDown={e => this.onKeyDown(e)}
         />
-        <button onClick={this.onClick}>
-          Найти
-        </button>
-        {
-          weatherData && !isEmpty(weatherData) &&
+        <button onClick={this.onClick}>Найти</button>
+        {weatherData && !isEmpty(weatherData) && (
           <DisplayOfWeather weatherData={weatherData} />
-        }
+        )}
       </div>
     )
   }
 }
 
 const mapState = state => ({
-  weatherData: state.archive.payload,
+  weatherData: getPayloadWeather(state),
 })
 
-const mapDispatch = dispatch => ({
-  getWeather: nameCity => dispatch.archive.getWeather(nameCity)
-})
+const mapDispatch = dispatch =>
+  bindActionCreators(
+    {
+      getWeather,
+    },
+    dispatch
+  )
 
-export default connect(mapState, mapDispatch)(Content)
+export default connect(
+  mapState,
+  mapDispatch
+)(Content)

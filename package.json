@@ -7,6 +7,12 @@
     "start": "webpack-dev-server --hot --color",
     "build": "webpack -p"
   },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "bracketSpacing": true
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -30,11 +36,13 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "lodash": "^4.17.10",
+    "prettier": "^1.15.3",
+    "redux-actions": "^2.6.4",
+    "redux-thunk": "^2.3.0",
     "webpack": "^3.7.1",
     "webpack-dev-server": "^2.11.1"
   },
   "dependencies": {
-    "@rematch/core": "^1.0.2",
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "history": "^4.7.2",
     "prop-types": "latest",
