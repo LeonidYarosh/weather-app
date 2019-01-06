@@ -3,13 +3,11 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "noImplicitAny": true,
-    "module": "commonjs",
-    "target": "es5",
+    "target": "esnext",
     "jsx": "react",
+    "module": "esnext",
     "moduleResolution": "node",
     "baseUrl": "./src",
-    "paths": {
-      "features/*": ["features/*"]
-    }
+    "allowSyntheticDefaultImports": true
   }
 }
