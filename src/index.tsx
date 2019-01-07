@@ -1,5 +1,3 @@
-require('module-alias/register')
-
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
@@ -10,9 +8,10 @@ import 'features/common/styles/style.less'
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
-    { process.env.NODE_ENV === 'production' && <DevTools />}
+    <div>
+      <App />
+      { process.env.NODE_ENV === 'development' && <DevTools />}
+    </div>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById('root'),
 )
-

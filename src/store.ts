@@ -1,32 +1,33 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { reducers } from 'features/ducks'
+import DevTools from './DevTools'
+
 // import createHistory from 'history/createBrowserHistory'
 // import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 // export const history = createHistory()
 
 const rootReducer = combineReducers({
-  // routing: routerReducer,
   ...reducers,
 })
 
 // const middleware = [ thunk, routerMiddleware(history) ]
-const middleware = [ thunk ]
+const middleware = [thunk]
 
 const initialState = {}
-const enhancers = []
+// const enhancers = []
 
-if (process.env.NODE_ENV === 'development') {
-  const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-
-  if (typeof devToolsExtension === 'function') {
-    enhancers.push(devToolsExtension())
-  }
-}
+// if (process.env.NODE_ENV === 'development') {
+//   const devToolsExtension = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+//
+//   if (typeof devToolsExtension === 'function') {
+//     enhancers.push(devToolsExtension())
+//   }
+// }
 
 const composedEnhancers = compose(
   applyMiddleware(...middleware),
-  ...enhancers
+  DevTools.instrument(),
 )
 export const store = createStore(rootReducer, initialState, composedEnhancers)

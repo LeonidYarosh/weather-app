@@ -98,6 +98,12 @@ export const createNamedWrapperReducer = (reducerFunc: TReducerFunc, reducerName
 
 const getFetchReducer = (name:string) => createNamedWrapperReducer(fetchReducer, name)
 export default getFetchReducer
+
+export interface IGetFetchActions {
+  started: IAction,
+  success: IAction,
+  failure: IAction
+}
 /**
  * Создание шаблонных экшенов
  * @param name

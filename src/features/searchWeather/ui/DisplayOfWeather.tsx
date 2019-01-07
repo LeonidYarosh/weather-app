@@ -2,33 +2,41 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { converterFahrenheitToCelsius } from 'utils'
+import { getIconUrl } from 'features/common/const'
+import { IWeather } from '../api'
 
-export class DisplayOfWeather extends React.Component {
+type Props = {
+  weatherData: IWeather,
+}
+
+export class DisplayOfWeather extends React.Component<Props> {
   static propTypes = {
     weatherData: PropTypes.object,
   }
 
   render() {
-    const { weatherData: {
-      main: {
-        temp,
-        temp_max: tempMax,
-        temp_min: tempMin,
+    const {
+      weatherData: {
+        main: {
+          temp,
+          temp_max: tempMax,
+          temp_min: tempMin,
+        },
+        weather,
+        description,
+        name,
+        wind: {
+          speed,
+        },
       },
-      weather,
-      description,
-      name,
-      wind: {
-        speed,
-      },
-    } } = this.props
+    } = this.props
     const weatherCurrent = weather[0]
-    const iconUrl = 'http://openweathermap.org/img/w/' + weatherCurrent.icon + '.png'
+    const iconUrl = getIconUrl(weatherCurrent.icon)
 
     return (
       <div>
         <h1>
-          {weather.main} in {name}
+          {weatherCurrent.main} in {name}
           <img src={iconUrl} alt={description} />
         </h1>
         <p>Current: {converterFahrenheitToCelsius(temp)}°C</p>

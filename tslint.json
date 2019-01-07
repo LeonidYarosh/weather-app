@@ -8,6 +8,6 @@
         "ter-indent": false,
         "space-in-parens": false,
         "align": false,
-        "semicolon": ["never"]
+        "semicolon": [true, "never"]
     }
 }

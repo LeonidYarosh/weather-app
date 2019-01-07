@@ -1,38 +1,44 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { bindActionCreators, Dispatch } from 'redux'
 import isEmpty from 'lodash/isEmpty'
 
 import { DisplayOfWeather } from './DisplayOfWeather'
 import { getPayloadWeather } from '../ducks/selectors'
-import { getWeather } from '../ducks/actions'
+import { getWeather, TGetWeather } from '../ducks/actions'
+import { IStore } from 'features/ducks'
+import { IEventKeyboard } from '../../common/types'
+import { IWeather } from '../api'
 
-class Content extends React.Component {
-  static propTypes = {
-    getWeather: PropTypes.func,
-    weatherData: PropTypes.object,
-  }
+type State = {
+  city?: string,
+}
+
+type Props = {
+  getWeather(city: string): void,
+  weatherData: IWeather,
+}
+
+class Content extends React.Component<Props, State> {
 
   state = {
     city: '',
-    weatherData: null,
   }
 
-  onChange = (value, name) => {
+  onChange = (value:string, name: string):void => {
     this.setState({
       [name]: value,
     })
   }
 
-  onClick = () => {
+  onClick = ():void => {
     const { getWeather } = this.props
     const { city } = this.state
 
     getWeather(city)
   }
 
-  onKeyDown = e => {
+  onKeyDown = (e: IEventKeyboard):void => {
     if (e.key === 'Enter') {
       this.onClick()
     }
@@ -49,6 +55,7 @@ class Content extends React.Component {
           value={city}
           onChange={e => this.onChange(e.target.value, 'city')}
           onKeyDown={e => this.onKeyDown(e)}
+          placeholder="Введите название города"
         />
         <button onClick={this.onClick}>Найти</button>
         {weatherData && !isEmpty(weatherData) && (
@@ -59,19 +66,19 @@ class Content extends React.Component {
   }
 }
 
-const mapState = state => ({
+const mapState = (state:IStore) => ({
   weatherData: getPayloadWeather(state),
 })
 
-const mapDispatch = dispatch =>
+const mapDispatch = (dispatch:Dispatch) =>
   bindActionCreators(
     {
       getWeather,
     },
-    dispatch
+    dispatch,
   )
 
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(Content)

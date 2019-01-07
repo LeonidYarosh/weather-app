@@ -1,12 +1,10 @@
 import * as React from 'react'
-// import Content from 'features/searchWeather/ui'
-// <Content />
+import Content from 'features/searchWeather/ui'
+
 class App extends React.Component {
   render() {
     return (
-      <div>
-
-      </div>
+      <Content />
     )
   }
 }

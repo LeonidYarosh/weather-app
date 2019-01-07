@@ -42,7 +42,7 @@ const config = (env = 'development') => ({
   context: paths.src,
 
   entry: {
-    app: [ 'babel-polyfill', './index' ],
+    app: ['babel-polyfill', './index'],
   },
 
   output: {
@@ -52,8 +52,8 @@ const config = (env = 'development') => ({
   },
 
   resolve: {
-    extensions: [ '.ts', '.tsx', '.js', '.jsx', '.json' ],
-    modules: [ path.join(__dirname, 'src'), 'node_modules' ],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+    modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
 
   devServer: {
@@ -88,7 +88,7 @@ const config = (env = 'development') => ({
             loader: 'babel-loader',
             options: {
               plugins: isHot
-                ? [ 'syntax-dynamic-import', 'react-hot-loader/babel' ]
+                ? ['syntax-dynamic-import', 'react-hot-loader/babel']
                 : [],
             },
           },
@@ -99,20 +99,20 @@ const config = (env = 'development') => ({
       {
         test: /\.css$/,
         use: isHot
-          ? [ 'style-loader' ].concat(cssStyles)
+          ? ['style-loader'].concat(cssStyles)
           : ExtractTextPlugin.extract({
-            use: cssStyles,
-            publicPath: '../assets/',
-          }),
+              use: cssStyles,
+              publicPath: '../assets/',
+            }),
       },
       {
         test: /\.less$/,
         use: isHot
-          ? [ 'style-loader' ].concat(lessStyles)
+          ? ['style-loader'].concat(lessStyles)
           : ExtractTextPlugin.extract({
-            use: lessStyles,
-            publicPath: '../assets/',
-          }),
+              use: lessStyles,
+              publicPath: '../assets/',
+            }),
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -130,12 +130,8 @@ const config = (env = 'development') => ({
       },
     ],
   },
-  externals: {
-    react: 'React',
-    'react-dom': 'ReactDOM',
-  },
   plugins: [
-    new CleanWebpackPlugin([ 'dist' ]),
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
