@@ -2,14 +2,9 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const autoprefixerPlugin = require('autoprefixer')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-const isHot =
-  process.env.DEBUG === 'true'
-const isProduction =
-  process.argv.indexOf('-p') !== -1 ||
-  process.argv.indexOf('--optimize-minimize') !== -1
+const isHot = process.env.DEBUG === 'true'
 
 const BACKEND_PATH = '/httpbridge-server/'
 const BACKEND_HOST = 'localhost:9992'
@@ -17,23 +12,26 @@ const BACKEND_HOST = 'localhost:9992'
 const extractCSS = new ExtractTextPlugin('stylesheets/[name]-one.css')
 const extractLESS = new ExtractTextPlugin('stylesheets/[name]-two.css')
 
-const cssStyles = [ {
-  loader: 'css-loader',
-  options: {
-    sourceMap: true,
-    sourceComments: true,
-    importLoaders: 1,
+const cssStyles = [
+  {
+    loader: 'css-loader',
+    options: {
+      sourceMap: true,
+      sourceComments: true,
+      importLoaders: 1,
+    },
   },
-},
 ]
 
-const lessStyles = cssStyles.concat([ {
-  loader: 'less-loader',
-  options: {
-    sourceMap: true,
-    sourceComments: true,
+const lessStyles = cssStyles.concat([
+  {
+    loader: 'less-loader',
+    options: {
+      sourceMap: true,
+      sourceComments: true,
+    },
   },
-} ])
+])
 
 const paths = {
   src: path.resolve(__dirname, 'src'),
@@ -44,7 +42,7 @@ const config = (env = 'development') => ({
   context: paths.src,
 
   entry: {
-    app: [ 'babel-polyfill', './index' ],
+    app: ['babel-polyfill', './index'],
   },
 
   output: {
@@ -54,11 +52,8 @@ const config = (env = 'development') => ({
   },
 
   resolve: {
-    extensions: [ '.js', '.jsx' ],
-    modules: [
-      path.join(__dirname, 'src'),
-      'node_modules',
-    ],
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+    modules: [path.join(__dirname, 'src'), 'node_modules'],
   },
 
   devServer: {
@@ -80,55 +75,63 @@ const config = (env = 'development') => ({
   devtool: 'inline-source-map',
 
   module: {
-    rules: [ {
-      test: /globalize/,
-      loader: 'imports-loader?define=>false',
-    },
-    {
-      test: /\.(js|jsx)?$/,
-      exclude: /(node_modules)/,
-      use: [
-        {
-          loader: 'babel-loader',
-          options: {
-            plugins: isHot ? [ 'syntax-dynamic-import', 'react-hot-loader/babel' ] : [],
+    rules: [
+      {
+        test: /globalize/,
+        loader: 'imports-loader?define=>false',
+      },
+      {
+        test: /\.(js|jsx)?$/,
+        exclude: /(node_modules)/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: isHot
+                ? ['syntax-dynamic-import', 'react-hot-loader/babel']
+                : [],
+            },
           },
+        ],
+      },
+      { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+      { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
+      {
+        test: /\.css$/,
+        use: isHot
+          ? ['style-loader'].concat(cssStyles)
+          : ExtractTextPlugin.extract({
+              use: cssStyles,
+              publicPath: '../assets/',
+            }),
+      },
+      {
+        test: /\.less$/,
+        use: isHot
+          ? ['style-loader'].concat(lessStyles)
+          : ExtractTextPlugin.extract({
+              use: lessStyles,
+              publicPath: '../assets/',
+            }),
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'img/[name].[ext]',
         },
-      ],
-    }, {
-      test: /\.css$/,
-      use: isHot ?
-        [ 'style-loader' ].concat(cssStyles) :
-        ExtractTextPlugin.extract({
-          use: cssStyles,
-          publicPath: '../assets/',
-        }),
-    }, {
-      test: /\.less$/,
-      use: isHot ?
-        [ 'style-loader' ].concat(lessStyles) :
-        ExtractTextPlugin.extract({
-          use: lessStyles,
-          publicPath: '../assets/',
-        }),
-    }, {
-      test: /\.(png|jpg|gif)$/,
-      loader: 'file-loader',
-      options: {
-        name: 'img/[name].[ext]',
       },
-    }, {
-      test: /\.(ttf|eot|woff|woff2|svg)$/,
-      loader: 'file-loader',
-      options: {
-        name: 'fonts/[name].[ext]',
+      {
+        test: /\.(ttf|eot|woff|woff2|svg)$/,
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[ext]',
+        },
       },
-    },
     ],
   },
-
   plugins: [
-    new CleanWebpackPlugin([ 'dist' ]),
+    new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
