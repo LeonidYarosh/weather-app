@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import isEmpty from 'lodash/isEmpty'
+import memoize from 'lodash/memoize'
 
 import { DisplayOfWeather } from './DisplayOfWeather'
 import { getPayloadWeather } from '../ducks/selectors'
@@ -42,22 +43,22 @@ class Content extends React.Component<TProps, IState> {
    * @param value
    * @param name
    */
-  onChange = (value:string, name: string) => {
+  handleChange = (value:string, name: string) => {
     this.setState({
       [name]: value,
     })
   }
 
-  onClick = () => {
+  handleClick = () => {
     const { getWeather } = this.props
     const { city } = this.state
 
     getWeather(city)
   }
 
-  onKeyDown = (e: IEventKeyboard) => {
-    if   (e.key === 'Enter') {
-      this.onClick()
+  handleKeyDown = (e: IEventKeyboard) => {
+    if (e.key === 'Enter') {
+      this.handleClick()
     }
   }
 
@@ -70,11 +71,11 @@ class Content extends React.Component<TProps, IState> {
         <input
           type="text"
           value={city}
-          onChange={e => this.onChange(e.target.value, 'city')}
-          onKeyDown={e => this.onKeyDown(e)}
+          onChange={memoize(e => this.handleChange(e.target.value, 'city'))}
+          onKeyDown={this.handleKeyDown}
           placeholder="Введите название города"
         />
-        <button onClick={this.onClick}>Найти</button>
+        <button onClick={this.handleClick}>Найти</button>
         {weatherData && !isEmpty(weatherData) && (
           <DisplayOfWeather weatherData={weatherData} />
         )}
