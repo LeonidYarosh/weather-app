@@ -11,6 +11,11 @@ const BACKEND_HOST = 'localhost:9992'
 
 const extractCSS = new ExtractTextPlugin('stylesheets/[name]-one.css')
 const extractLESS = new ExtractTextPlugin('stylesheets/[name]-two.css')
+const extractSCSS = new ExtractTextPlugin({
+  filename: 'styles-[hash].min.css',
+  allChunks: true,
+  disable: !isHot,
+})
 
 const cssStyles = [
   {
@@ -100,7 +105,7 @@ const config = (env = 'development') => ({
         test: /\.css$/,
         use: isHot
           ? ['style-loader'].concat(cssStyles)
-          : ExtractTextPlugin.extract({
+          : extractSCSS.extract({
               use: cssStyles,
               publicPath: '../assets/',
             }),
@@ -113,6 +118,31 @@ const config = (env = 'development') => ({
               use: lessStyles,
               publicPath: '../assets/',
             }),
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        loader: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
+            {
+              loader: 'postcss-loader',
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+                outputStyle: env !== 'development' ? 'compressed' : 'expanded',
+              },
+            },
+          ],
+          fallback: 'style-loader',
+        }),
       },
       {
         test: /\.(png|jpg|gif)$/,
@@ -142,6 +172,7 @@ const config = (env = 'development') => ({
     }),
     extractCSS,
     extractLESS,
+    extractSCSS,
   ],
 })
 

@@ -2,8 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators, Dispatch } from 'redux'
 import isEmpty from 'lodash/isEmpty'
+import { NavigationDrawer } from 'react-md'
 
 import { DisplayOfWeather } from './DisplayOfWeather'
+
 import { getPayloadWeather } from '../ducks/selectors'
 import { getWeather, TGetWeather } from '../ducks/actions'
 import { IStore } from 'features/ducks'
@@ -49,7 +51,10 @@ class Content extends React.Component<Props, State> {
     const { weatherData } = this.props
 
     return (
-      <div>
+      <NavigationDrawer
+        drawerTitle="react-md with CRA"
+        toolbarTitle="Welcome to react-md"
+      >
         <input
           type="text"
           value={city}
@@ -61,7 +66,7 @@ class Content extends React.Component<Props, State> {
         {weatherData && !isEmpty(weatherData) && (
           <DisplayOfWeather weatherData={weatherData} />
         )}
-      </div>
+      </NavigationDrawer>
     )
   }
 }
