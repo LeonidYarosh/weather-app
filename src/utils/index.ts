@@ -1,5 +1,5 @@
 
-export const cx = (arr:[string]):string =>
+export const cx = (arr:string[]):string =>
   arr.filter(e => e).join(' ')
 
 export const converterFahrenheitToCelsius = (fahrenheit:number):string =>

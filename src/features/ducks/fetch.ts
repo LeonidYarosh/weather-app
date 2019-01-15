@@ -22,8 +22,8 @@ export interface IAction {
 
 export interface IStandardState {
   isFetching: boolean,
-  errorData: object | null,
-  payload: object | null,
+  errorData: any,
+  payload: any,
 }
 
 export interface IStandardReducer {
@@ -32,28 +32,8 @@ export interface IStandardReducer {
   'fetch/FAILURE': IStandardState,
 }
 
-const standardReducers = {
-  [types.STARTED]: (state: IStandardState):IStandardState => ({
-    ...state,
-    isFetching: true,
-    errorData: null,
-  }),
-  [types.SUCCESS]: (state: IStandardState, { payload }: IAction):IStandardState => ({
-    ...state,
-    payload,
-    isFetching: false,
-    errorData: null,
-  }),
-  [types.FAILURE]: (state: IStandardState, { payload }: IAction):IStandardState => ({
-    ...state,
-    isFetching: false,
-    errorData: payload,
-  }),
-}
-
 export type TReducerFunc = (state: object, action: IAction) => object
 
-// @ts-ignore
 const fetchReducer = handleActions({
     [types.STARTED]: (state: IStandardState):IStandardState => ({
       ...state,
@@ -96,8 +76,7 @@ export const createNamedWrapperReducer = (reducerFunc: TReducerFunc, reducerName
   return reducerFunc(state, action)
 }
 
-const getFetchReducer = (name:string) => createNamedWrapperReducer(fetchReducer, name)
-export default getFetchReducer
+export const getFetchReducer = (name:string) => createNamedWrapperReducer(fetchReducer, name)
 
 export interface IGetFetchActions {
   started: IAction,

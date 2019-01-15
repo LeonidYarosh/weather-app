@@ -1,4 +1,4 @@
-import ActionType from './const'
-import fetchReducer from 'features/ducks/fetch'
+import { ActionType } from './const'
+import { getFetchReducer } from 'features/ducks/fetch'
 
-export default fetchReducer(ActionType.GET_WEATHER_FOR_CITY)
+export const reducers = getFetchReducer(ActionType.GET_WEATHER_FOR_CITY)

@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { reducers } from 'features/ducks'
-import DevTools from './DevTools'
+import { DevTools } from './DevTools'
 
 // import createHistory from 'history/createBrowserHistory'
 // import { routerReducer, routerMiddleware } from 'react-router-redux'

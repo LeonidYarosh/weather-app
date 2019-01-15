@@ -1,18 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import { converterFahrenheitToCelsius } from 'utils'
 import { getIconUrl } from 'features/common/const'
 import { IWeather } from '../api'
 
-type Props = {
+interface IProps {
   weatherData: IWeather,
 }
 
-export class DisplayOfWeather extends React.Component<Props> {
-  static propTypes = {
-    weatherData: PropTypes.object,
-  }
+export class DisplayOfWeather extends React.Component<IProps> {
 
   render() {
     const {

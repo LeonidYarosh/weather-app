@@ -1,4 +1,4 @@
-import weather from 'features/searchWeather/ducks'
+import { reducers as weather } from 'features/searchWeather/ducks'
 import { IStandardState } from './fetch'
 
 export interface IStore {

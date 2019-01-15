@@ -61,7 +61,6 @@
     "@types/redux-devtools-log-monitor": "^1.0.34",
     "babel-plugin-transform-es2015-classes": "^6.24.1",
     "history": "^4.7.2",
-    "prop-types": "latest",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-redux": "^5.1.1",

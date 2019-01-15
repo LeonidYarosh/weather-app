@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 
 import { getFetchActions, IGetFetchActions } from 'features/ducks/fetch'
-import ActionType from './const'
+import { ActionType } from './const'
 import { fetchGetWeather } from '../api'
 
 const actions = getFetchActions(ActionType.GET_WEATHER_FOR_CITY)

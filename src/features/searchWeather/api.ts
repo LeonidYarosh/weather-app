@@ -15,7 +15,7 @@ export interface IWeather {
     main: string,
     icon: string,
     description: string,
-  }]
+  }],
   description: string,
   name: string,
   wind: {

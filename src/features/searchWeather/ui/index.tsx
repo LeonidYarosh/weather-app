@@ -10,36 +10,53 @@ import { IStore } from 'features/ducks'
 import { IEventKeyboard } from '../../common/types'
 import { IWeather } from '../api'
 
-type State = {
+/**
+ * Интерфейс состояния Content компонента
+ * @prop {string} [city] - название города
+ */
+interface IState {
   city?: string,
 }
 
-type Props = {
-  getWeather(city: string): void,
+interface IStateProps {
   weatherData: IWeather,
 }
 
-class Content extends React.Component<Props, State> {
+interface IDispatchProps {
+  getWeather: (city: string) => void,
+}
 
-  state = {
+type TProps = IDispatchProps & IStateProps
+
+/**
+ * @class Content
+ */
+class Content extends React.Component<TProps, IState> {
+
+  state:IState = {
     city: '',
   }
-
-  onChange = (value:string, name: string):void => {
+  /**
+   * @function
+   * @inner
+   * @param value
+   * @param name
+   */
+  onChange = (value:string, name: string) => {
     this.setState({
       [name]: value,
     })
   }
 
-  onClick = ():void => {
+  onClick = () => {
     const { getWeather } = this.props
     const { city } = this.state
 
     getWeather(city)
   }
 
-  onKeyDown = (e: IEventKeyboard):void => {
-    if (e.key === 'Enter') {
+  onKeyDown = (e: IEventKeyboard) => {
+    if   (e.key === 'Enter') {
       this.onClick()
     }
   }
@@ -66,11 +83,11 @@ class Content extends React.Component<Props, State> {
   }
 }
 
-const mapState = (state:IStore) => ({
+const mapStateToProps = (state:IStore):IStateProps => ({
   weatherData: getPayloadWeather(state),
 })
 
-const mapDispatch = (dispatch:Dispatch) =>
+const mapDispatchToProps = (dispatch:Dispatch):IDispatchProps =>
   bindActionCreators(
     {
       getWeather,
@@ -78,7 +95,7 @@ const mapDispatch = (dispatch:Dispatch) =>
     dispatch,
   )
 
-export default connect(
-  mapState,
-  mapDispatch,
+export default connect<IStateProps, IDispatchProps>(
+  mapStateToProps,
+  mapDispatchToProps,
 )(Content)
